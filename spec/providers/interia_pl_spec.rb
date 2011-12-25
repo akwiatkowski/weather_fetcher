@@ -1,11 +1,11 @@
-describe "WeatherFetcher::Provider::OnetPl", :html => true do
+describe "WeatherFetcher::Provider::InteriaPl", :html => false do
   before :each do
-    @defs = load_fixture('onet_pl')
+    @defs = load_fixture('interia_pl')
     @defs.size.should > 0
   end
 
   it "simple fetch" do
-    f = WeatherFetcher::Provider::OnetPl.new(@defs)
+    f = WeatherFetcher::Provider::InteriaPl.new(@defs)
     weathers = f.fetch
     weathers.should == f.weathers
 
