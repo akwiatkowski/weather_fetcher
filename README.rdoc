@@ -1,12 +1,17 @@
 = weather_fetcher
 
-Fetch weather from various Polish websites and via other gems
+Fetch weather from various Polish websites and via other gems.
 
 == How to use
 
-It is very early gem. More feature coming soon.
+It is very early gem. More feature coming soon. At this moment you can use 3 providers: Onet.pl,
+Wp.pl and Interia.pl.
 
-The simplest way to use is:
+There is simple 'how to use' code below. _defs_ is Hash object with proper data. Refactoring is on
+the way, so read this file later.
+
+
+= Onet.pl
 
   weathers = WeatherFetcher::Provider::OnetPl.new(defs).fetch
 
@@ -18,6 +23,35 @@ Where _defs_ is something like this:
     :coord:
       :lat: 52.799264
       :lon: 18.259935
+
+
+== Wp.pl
+
+  weathers = WeatherFetcher::Provider::WpPl.new(defs).fetch
+
+Where _defs_ is something like this:
+
+  - :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
+    :city: 'Bydgoszcz'
+    :country: 'Poland'
+    :coord:
+      :lat: 53.128893
+      :lon: 18.006363
+
+
+== Interia.pl
+
+  weathers = WeatherFetcher::Provider::InteriaPl.new(defs).fetch
+
+Where _defs_ is something like this:
+
+  - :url: 'http://pogoda.interia.pl/miasta?id=11721'
+    :city: 'Inowrocław'
+    :country: 'Poland'
+    :coord:
+      :lat: 52.799264
+      :lon: 18.259935
+
 
 == Contributing to weather_fetcher
  
