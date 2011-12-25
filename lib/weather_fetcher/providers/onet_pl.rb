@@ -4,15 +4,16 @@ module WeatherFetcher
   class Provider::OnetPl < HtmlBased
 
     def self.provider_name
-      'OnetPl'
+      "Onet.pl"
     end
 
     def process(string)
-      @weathers += _process_a(string)
+      @weathers += _process_details(string)
+      @weathers += _process_daily(string)
     end
 
     # Process response body and rip out weather data, details
-    def _process_a(body_raw)
+    def _process_details(body_raw)
 
       body_tmp = body_raw.downcase
       #    if body_tmp =~ /szczeg..owa(.*)Prognoza/
@@ -69,8 +70,7 @@ module WeatherFetcher
           :wind => winds[0][0].to_f / 3.6,
           :snow => snows[0][0].to_f,
           :rain => rains[0][0].to_f,
-          :provider => self.class.provider_name,
-          :weather_provider_id => id
+          :provider => self.class.provider_name
         },
         {
           :time_created => Time.now,
@@ -82,8 +82,7 @@ module WeatherFetcher
           :wind => winds[1][0].to_f / 3.6,
           :snow => snows[1][0].to_f,
           :rain => rains[1][0].to_f,
-          :provider => self.class.provider_name,
-          :weather_provider_id => id
+          :provider => self.class.provider_name
         }
       ]
 
@@ -91,7 +90,7 @@ module WeatherFetcher
     end
 
     # Process response body and rip out weather data, daily
-    def _process_c(body_raw)
+    def _process_daily(body_raw)
 
       body_tmp = body_raw.downcase
       body = body_tmp

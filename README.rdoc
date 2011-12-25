@@ -1,6 +1,23 @@
 = weather_fetcher
 
-Description goes here.
+Fetch weather from various Polish websites and via other gems
+
+== How to use
+
+It is very early gem. More feature coming soon.
+
+The simplest way to use is:
+
+  weathers = WeatherFetcher::Provider::OnetPl.new(defs).fetch
+
+Where _defs_ is something like this:
+
+  - :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
+    :city: 'Inowrocław'
+    :country: 'Poland'
+    :coord:
+      :lat: 52.799264
+      :lon: 18.259935
 
 == Contributing to weather_fetcher
  

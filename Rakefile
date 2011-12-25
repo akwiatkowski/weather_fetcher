@@ -16,9 +16,9 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "weather_fetcher"
   gem.homepage = "http://github.com/akwiatkowski/weather_fetcher"
-  gem.license = "MIT"
-  gem.summary = %Q{Fetch weather from various Polish websites}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.license = "LGPLv3"
+  gem.summary = %Q{Fetch weather from various Polish websites and via other gems}
+  gem.description = %Q{Fetch weather from various Polish websites and via other gems. At the moment it is only polish portal Onet.pl but more providers will come soon.}
   gem.email = "bobikx@poczta.fm"
   gem.authors = ["Aleksander Kwiatkowski"]
   # dependencies defined in Gemfile

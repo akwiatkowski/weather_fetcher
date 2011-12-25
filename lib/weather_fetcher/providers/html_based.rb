@@ -6,19 +6,18 @@ module WeatherFetcher
 
     TYPE = :html_based
 
-
-    # Fetch
-    def fetch_single(d)
+    # Get processed weather for one definition
+    def fetch_and_process_single(d)
       url = d[:url]
       body = fetch_url(url)
       processed = process(body)
       return processed
     end
 
+    # Download url
     def fetch_url(url)
       return Net::HTTP.get(URI.parse(url))
     end
-
 
   end
 end
