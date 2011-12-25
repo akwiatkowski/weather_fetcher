@@ -8,5 +8,9 @@ require 'weather_fetcher'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+
+end
+
+def load_fixture(f)
+  return YAML::load(File.open(File.join(Dir.pwd, 'spec', 'fixtures', "#{f}.yml")))
 end
