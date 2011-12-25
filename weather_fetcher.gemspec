@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "weather_fetcher"
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
@@ -26,14 +26,23 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/weather_fetcher.rb",
+    "lib/weather_fetcher/provider_list.rb",
     "lib/weather_fetcher/providers.rb",
     "lib/weather_fetcher/providers/html_based.rb",
-    "lib/weather_fetcher/providers/onet_pl.rb",
+    "lib/weather_fetcher/providers/html_based/interia_pl.rb",
+    "lib/weather_fetcher/providers/html_based/onet_pl.rb",
+    "lib/weather_fetcher/providers/html_based/wp_pl.rb",
     "lib/weather_fetcher/providers/provider.rb",
+    "spec/fixtures/interia_pl.yml",
     "spec/fixtures/onet_pl.yml",
+    "spec/fixtures/weather.yml",
+    "spec/fixtures/wp_pl.yml",
+    "spec/providers/interia_pl_spec.rb",
     "spec/providers/onet_pl_spec.rb",
+    "spec/providers/wp_pl_spec.rb",
     "spec/spec_helper.rb",
-    "spec/weather_fetcher_spec.rb"
+    "spec/weather_fetcher_spec.rb",
+    "weather_fetcher.gemspec"
   ]
   s.homepage = "http://github.com/akwiatkowski/weather_fetcher"
   s.licenses = ["LGPLv3"]
@@ -49,17 +58,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<rdoc>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<rdoc>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<rdoc>, [">= 0"])
   end
 end
 
