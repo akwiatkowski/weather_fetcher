@@ -1,0 +1,6 @@
+- :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
+  :city: 'Bydgoszcz'
+  :country: 'Poland'
+  :coord:
+    :lat: 53.128893
+    :lon: 18.006363

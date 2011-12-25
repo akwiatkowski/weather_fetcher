@@ -150,8 +150,7 @@ module WeatherFetcher
           :wind => winds[i],
           :snow => snows[i],
           :rain => rains[i],
-          :provider => self.class.provider_name,
-          :weather_provider_id => id
+          :provider => self.class.provider_name
         }
         data << h
       end
