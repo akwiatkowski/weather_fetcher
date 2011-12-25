@@ -160,4 +160,8 @@ module WeatherFetcher
     end
 
   end
+
+
+  #WeatherFetcher::ProviderList.register_provider(Provider::OnetPl)
 end
+

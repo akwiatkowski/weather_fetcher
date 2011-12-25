@@ -8,7 +8,8 @@ require 'weather_fetcher'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-
+  #config.filter_run :html => false
+  config.filter_run_excluding :html => true
 end
 
 def load_fixture(f)

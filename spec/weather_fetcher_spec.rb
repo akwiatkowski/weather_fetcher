@@ -13,4 +13,14 @@ describe "WeatherFetcher" do
     lambda { WeatherFetcher::Provider.new({}) }.should_not raise_error
   end
 
+  it "should return provider classes list" do
+    providers = WeatherFetcher::ProviderList.providers
+    providers.each do |p|
+      p.should be_kind_of(Class)
+
+      instance = p.new
+      instance.should respond_to(:fetch)
+    end
+  end
+
 end
