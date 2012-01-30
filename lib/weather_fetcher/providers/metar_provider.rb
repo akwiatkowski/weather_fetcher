@@ -12,8 +12,10 @@ module WeatherFetcher
     attr_reader :metars
 
     # Get processed weather for one definition
-    def fetch_and_process_single(d)
-      url = url_for_metar(d[:metar_code])
+    def fetch_and_process_single(p)
+      return nil unless can_fetch?(p)
+
+      url = url_for_metar(metar(p))
       body = fetch_url(url)
       processed = process(body)
 
@@ -32,6 +34,19 @@ module WeatherFetcher
 
     def url_for_metar(metar_city)
       raise 'Not implemented'
+    end
+
+    # Metar
+    def metar(p)
+      p[:metar]
+    end
+
+    def can_fetch?(p)
+      begin
+        metar(p).nil? == false
+      rescue
+        false
+      end
     end
 
   end
