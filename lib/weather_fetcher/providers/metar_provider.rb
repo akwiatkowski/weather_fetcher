@@ -1,3 +1,5 @@
+require 'simple_metar_parser'
+
 # All ugly providers who parse even uglier html code and rip off data
 module WeatherFetcher
   class MetarProvider < HtmlBasedProvider
@@ -17,15 +19,30 @@ module WeatherFetcher
 
       url = url_for_metar(metar(p))
       body = fetch_url(url)
-      processed = process(body)
+      metars = process(body)
+      processed = Array.new
 
-      processed.each do |m|
-        #puts MetarParser.parse(m)
-        # m = SimpleMetarParser::Parser.parse(metar_string)
-        puts m
+      metars.each do |m|
+        m = SimpleMetarParser::Parser.parse(m)
+
+        # if m.valid?
+        processed << {
+          :time_created => Time.now,
+          :time_from => m.time_from,
+          :time_to => m.time_to,
+          :temperature => m.temperature.degrees,
+          :pressure => m.pressure.hpa,
+          :wind_kmh => m.wind.kmh,
+          :wind => m.wind.mps,
+          :snow_metar => m.specials.snow_metar,
+          :rain_metar => m.specials.rain_metar,
+          :provider => self.class.provider_name
+        }
+        # end
+
       end
 
-      return processed
+      return WeatherData.factory(processed)
     end
 
     def self.provider_name
