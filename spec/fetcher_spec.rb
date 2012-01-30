@@ -24,7 +24,8 @@ describe "WeatherFetcher" do
         }
       }
     }
-    WeatherFetcher::Fetcher.fetch(h)
+    result = WeatherFetcher::Fetcher.fetch(h)
+    WeatherFetcher::Fetcher.represent_result(result)
   end
 
 

@@ -13,12 +13,14 @@ module WeatherFetcher
     def self.factory(array = [])
       ao = Array.new
       array.each do |a|
-        ao << self.new(a)
+        obj = self.new(a)
+        puts obj.time_from
+        ao << obj
       end
       return ao
     end
 
-    attr_reader :temperature, :wind
+    attr_reader :temperature, :wind, :time_from, :time_to
 
   end
 end

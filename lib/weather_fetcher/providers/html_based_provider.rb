@@ -12,7 +12,7 @@ module WeatherFetcher
       
       body = fetch_url(url(p))
       processed = process(body)
-      return WeatherData.factory(processed)
+      return processed
     end
 
     # Download url
