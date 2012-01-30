@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module WeatherFetcher
-  class Provider::WpPl < HtmlBased
+  class Provider::WpPl < HtmlBasedProvider
 
     def self.provider_name
       "Interia.pl"

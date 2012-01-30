@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module WeatherFetcher
-  class Provider::AviationWeather < Metar
+  class Provider::AviationWeather < MetarProvider
 
     def url_for_metar(metar_city)
       u = "http://aviationweather.gov/adds/metars/index.php?submit=1&station_ids=#{metar_city.upcase}"
@@ -16,8 +16,10 @@ module WeatherFetcher
         string.gsub!(/\n/, ' ')
         string.gsub!(/\t/, ' ')
         string.gsub!(/\s{2,}/, ' ')
-        @weathers << string.strip
+        @metars << string.strip
       end
+
+      @metars
     end
 
   end

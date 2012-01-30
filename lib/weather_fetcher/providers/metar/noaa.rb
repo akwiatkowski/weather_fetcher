@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module WeatherFetcher
-  class Provider::Noaa < Metar
+  class Provider::Noaa < MetarProvider
 
     def url_for_metar(metar_city)
       u = "http://weather.noaa.gov/pub/data/observations/metar/stations/#{metar_city.upcase}.TXT"
@@ -13,7 +13,7 @@ module WeatherFetcher
       string.gsub!(/\n/, ' ')
       string.gsub!(/\t/, ' ')
       string.gsub!(/\s{2,}/, ' ')
-      @weathers << string.strip
+      @metars << string.strip
     end
 
   end

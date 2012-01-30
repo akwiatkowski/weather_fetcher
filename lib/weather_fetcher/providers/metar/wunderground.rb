@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module WeatherFetcher
-  class Provider::Wunderground < Metar
+  class Provider::Wunderground < MetarProvider
 
     def url_for_metar(metar_city)
       u = "http://www.wunderground.com/Aviation/index.html?query=#{metar_city.upcase}"
@@ -14,7 +14,7 @@ module WeatherFetcher
       string.gsub!(/\n/, ' ')
       string.gsub!(/\t/, ' ')
       string.gsub!(/\s{2,}/, ' ')
-      @weathers << string.strip
+      @metars << string.strip
     end
 
   end

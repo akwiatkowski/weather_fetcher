@@ -1,23 +1,22 @@
+require 'net/http'
+
 # All ugly providers who parse even uglier html code and rip off data
 module WeatherFetcher
-  class Metar < HtmlBased
+  class HtmlBasedProvider < Provider
 
-    TYPE = :metar
+    TYPE = :html_based
 
     # Get processed weather for one definition
     def fetch_and_process_single(d)
-      url = url_for_metar(d[:metar_code])
+      url = d[:url]
       body = fetch_url(url)
       processed = process(body)
       return processed
     end
 
-    def self.provider_name
-      "Metar"
-    end
-
-    def url_for_metar(metar_city)
-      raise 'Not implemented'
+    # Download url
+    def fetch_url(url)
+      return Net::HTTP.get(URI.parse(url))
     end
 
   end

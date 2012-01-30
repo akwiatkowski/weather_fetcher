@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     "lib/weather_fetcher.rb",
     "lib/weather_fetcher/provider_list.rb",
     "lib/weather_fetcher/providers.rb",
-    "lib/weather_fetcher/providers/html_based.rb",
+    "lib/weather_fetcher/providers/html_based_provider.rb",
     "lib/weather_fetcher/providers/html_based/interia_pl.rb",
     "lib/weather_fetcher/providers/html_based/onet_pl.rb",
     "lib/weather_fetcher/providers/html_based/wp_pl.rb",

@@ -1,4 +1,4 @@
-describe "WeatherFetcher::Provider::InteriaPl", :html => true do
+describe "WeatherFetcher::Provider::InteriaPl", :ready => true do
   before :each do
     @defs = load_fixture('interia_pl')
     @defs.size.should > 0

@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module WeatherFetcher
-  class Provider::OnetPl < HtmlBased
+  class Provider::OnetPl < HtmlBasedProvider
 
     def self.provider_name
       "Onet.pl"

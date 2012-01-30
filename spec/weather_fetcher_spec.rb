@@ -23,4 +23,8 @@ describe "WeatherFetcher" do
     end
   end
 
+  it "should use new way of input" do
+
+  end
+
 end
