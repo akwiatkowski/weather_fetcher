@@ -7,7 +7,7 @@ module WeatherFetcher
     # Create an instance, definitions can be set here
     def initialize(_defs = Array.new)
       @weathers = Array.new
-      self.defs= _defs
+      self.defs = _defs
     end
 
     attr_reader :weathers
@@ -39,7 +39,7 @@ module WeatherFetcher
 
     # Name of provider, should be overrode
     def self.provider_name
-      raise 'Not implemented'
+      raise NotImplementedError
     end
 
     # Fetch everything from definitions (defs)
@@ -53,12 +53,34 @@ module WeatherFetcher
 
     # Fetch single definition
     def fetch_and_process_single(d)
-      url = d[:url]
+      return nil unless can_fetch?
+
       body = fetch_url(url)
       processed = process(body)
       return processed
     end
 
+    # All parameters are available and we can fetch
+    def can_fetch?(p = nil)
+      raise NotImplementedError
+    end
+
+    def url(p = nil)
+      raise NotImplementedError
+    end
+
+    def self.short_class_name
+      self.to_s.gsub(/^.*::/, '')
+    end
+
+    def short_class_name
+      self.class.short_class_name
+    end
+
+    # Return Hash of parameters used for current provider
+    def provider_params(p)
+      return p[:classes][short_class_name]
+    end
 
   end
 end

@@ -4,11 +4,18 @@ module WeatherFetcher
 
     def self.fetch(p)
       require 'yaml'
-      puts ProviderList.providers.collect{|c| c.to_s}.to_yaml
+      classes = ProviderList.providers
 
-      puts "*"*200
-
+      #puts classes.collect{|c| c.to_s}.to_yaml
+      #puts "*"*200
       puts p.to_yaml
+
+      classes.each do |c|
+        puts "executing #{c.to_s}"
+        instance = c.new(p)
+        puts instance.fetch
+      end
+
     end
 
 
