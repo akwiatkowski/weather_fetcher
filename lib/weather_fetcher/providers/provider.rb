@@ -6,6 +6,8 @@ module WeatherFetcher
 
     # Create an instance, definitions can be set here
     def initialize(_defs = Array.new)
+      puts _defs.to_yaml
+
       @weathers = Array.new
       self.defs = _defs
     end
@@ -46,7 +48,9 @@ module WeatherFetcher
     def fetch
       a = Array.new
       defs.each do |d|
-        a += fetch_and_process_single(d)
+        p = fetch_and_process_single(d)
+        puts p.inspect, "*"*100, self.class
+        a += p
       end
       return a
     end

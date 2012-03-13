@@ -1,6 +1,8 @@
+require 'spec_helper'
+
 describe "WeatherFetcher::Provider::OnetPl", :ready => true do
   before :each do
-    @defs = load_fixture('onet_pl')
+    @defs = load_fixture('main')
     @defs.size.should > 0
   end
 
@@ -8,7 +10,6 @@ describe "WeatherFetcher::Provider::OnetPl", :ready => true do
     f = WeatherFetcher::Provider::OnetPl.new(@defs)
     weathers = f.fetch
     weathers.should == f.weathers
-
-    # puts weathers.to_yaml
+    weathers.size.should > 1
   end
 end

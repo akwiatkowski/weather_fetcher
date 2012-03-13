@@ -1,0 +1,6 @@
+- :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
+  :city: 'Inowrocław'
+  :country: 'Poland'
+  :coord:
+    :lat: 52.799264
+    :lon: 18.259935

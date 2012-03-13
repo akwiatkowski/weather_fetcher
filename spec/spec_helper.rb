@@ -9,9 +9,15 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
   #config.filter_run :html => false
-  config.filter_run_excluding :ready => true
+  #config.filter_run_excluding :ready => true
 end
 
+require 'yaml'
 def load_fixture(f)
   return YAML::load(File.open(File.join(Dir.pwd, 'spec', 'fixtures', "#{f}.yml")))
+end
+
+# Definitions for cities in form of array
+def cities_defs
+  load_fixture('main')
 end

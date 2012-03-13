@@ -3,29 +3,35 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "WeatherFetcher" do
+  context 'fetch from websites' do
+    before :each do
+      @defs = load_fixture('main')
+      @defs.size.should > 0
+    end
+
+    it "should fetch using all classes separately" do
+      klasses = WeatherFetcher::ProviderList.providers
+      klasses.each do |k|
+        begin
+          instance = k.new(@defs)
+          weathers = instance.fetch
+        rescue => e
+          puts "failed at model #{k}"
+          raise e
+        end
+      end
+    end
+
+    it "should fetch using main class" do
+      result = WeatherFetcher::Fetcher.fetch()
+    end
+
+
+  end
+
   it "use one method to fetch from all providers" do
-    h = {
-      :name => 'Poznań',
-      :country => 'Poland',
-      :metar => 'EPPO',
-      :coords => {
-        :lat => 52.411048,
-        :lon => 16.928329
-      },
-      :classes => {
-        'OnetPl' => {
-          :url => 'http://pogoda.onet.pl/0,198,38,poznan,miasto.html'
-        },
-        'WpPl' => {
-          :url => 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
-        },
-        'InteriaPl' => {
-          :url => 'http://pogoda.interia.pl/miasta?id=11875'
-        }
-      }
-    }
-    result = WeatherFetcher::Fetcher.fetch(h)
-    WeatherFetcher::Fetcher.represent_result(result)
+    #result = WeatherFetcher::Fetcher.fetch(h)
+    #WeatherFetcher::Fetcher.represent_result(result)
   end
 
 

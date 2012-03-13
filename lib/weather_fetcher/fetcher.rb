@@ -6,10 +6,8 @@ module WeatherFetcher
       require 'yaml'
       classes = ProviderList.providers
       result = Array.new
-      # puts p.to_yaml
 
       classes.each do |c|
-        # puts "executing #{c.to_s}"
         instance = c.new(p)
         instance.fetch
         result += instance.weathers
