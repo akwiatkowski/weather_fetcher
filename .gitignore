@@ -49,4 +49,5 @@ pkg
 
 .idea
 
-./spec/fixtures/world_weather_api.rb
+# api key, it is secret
+spec/fixtures/world_weather_api.rb

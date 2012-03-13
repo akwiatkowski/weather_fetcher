@@ -34,7 +34,6 @@ module WeatherFetcher
 
     def process(string)
       result = JSON.parse(string)
-      puts "!"*100
 
       # weather archives as processing output
       weather_archives = Array.new
@@ -61,7 +60,6 @@ module WeatherFetcher
       predictions.each do |p|
         h = process_node(p)
         h[:pressure] = nil
-        h[:city_id] = city.id
 
         # create 2 records using tempMinC and tempMaxC
         hl = h.merge(
