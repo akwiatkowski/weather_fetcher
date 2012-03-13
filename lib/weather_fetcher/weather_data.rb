@@ -2,6 +2,8 @@
 module WeatherFetcher
   class WeatherData
 
+    # TODO move to other gem
+
     def initialize(h = { })
       @h = h
       @h.keys.each do |k|

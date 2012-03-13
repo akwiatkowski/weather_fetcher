@@ -8,8 +8,10 @@ module WeatherFetcher
     end
 
     def process(string)
-      @weathers += WeatherData.factory( _process_details(string) )
-      @weathers += WeatherData.factory( _process_daily(string) )
+      a = Array.new
+      a += WeatherData.factory( _process_details(string) )
+      a += WeatherData.factory( _process_daily(string) )
+      return a
     end
 
     # Process response body and rip out weather data, details

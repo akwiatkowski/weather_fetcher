@@ -42,8 +42,7 @@ module WeatherFetcher
 
       end
 
-      @weathers = WeatherData.factory(processed)
-      return @weathers
+      return WeatherData.factory(processed)
     end
 
     def self.provider_name

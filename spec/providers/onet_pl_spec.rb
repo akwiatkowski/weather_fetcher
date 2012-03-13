@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe "WeatherFetcher::Provider::OnetPl", :ready => true do
   before :each do
-    @defs = load_fixture('main')
-    @defs.size.should > 0
+    @defs = cities_defs
   end
 
   it "simple fetch" do

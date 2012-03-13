@@ -1,7 +1,8 @@
+require 'spec_helper'
+
 describe "WeatherFetcher::Provider::InteriaPl", :ready => true do
   before :each do
-    @defs = load_fixture('interia_pl')
-    @defs.size.should > 0
+    @defs = cities_defs
   end
 
   it "simple fetch" do

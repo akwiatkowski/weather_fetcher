@@ -17,7 +17,7 @@ describe WeatherFetcher::Provider::WorldWeatherOnline do
     f = WeatherFetcher::Provider::WorldWeatherOnline.new(@defs)
     weathers = f.fetch
     weathers.should == f.weathers
-
-    puts weathers.to_yaml
   end
+
+  # TODO add some tests
 end

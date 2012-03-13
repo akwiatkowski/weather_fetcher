@@ -49,9 +49,11 @@ module WeatherFetcher
       a = Array.new
       defs.each do |d|
         p = fetch_and_process_single(d)
-        puts p.inspect, "*"*100, self.class
         a += p
       end
+      # add to result array
+      @weathers += a
+      
       return a
     end
 

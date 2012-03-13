@@ -14,7 +14,7 @@ module WeatherFetcher
       string.gsub!(/\n/, ' ')
       string.gsub!(/\t/, ' ')
       string.gsub!(/\s{2,}/, ' ')
-      @metars << string.strip
+      string.strip
     end
 
   end
