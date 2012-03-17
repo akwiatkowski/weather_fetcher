@@ -10,49 +10,38 @@ Wp.pl and Interia.pl.
 There is simple 'how to use' code below. _defs_ is Hash object with proper data. Refactoring is on
 the way, so read this file later.
 
+Please check spec/fetcher_spec.rb for code sample, and spec/fixtures/main.yml for parameters.
 
-= Onet.pl
+= Definitions
 
-  weathers = WeatherFetcher::Provider::OnetPl.new(defs).fetch
-
-Where _defs_ is something like this:
-
-  - :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
-    :city: 'Inowrocław'
+  - :name: 'Poznań'
     :country: 'Poland'
-    :coord:
-      :lat: 52.799264
-      :lon: 18.259935
+    :metar: 'EPPO'
+    :coords:
+      :lat: 52.411048,
+      :lon: 16.928329
+    :classes:
+      OnetPl:
+        :url: 'http://pogoda.onet.pl/0,198,38,poznan,miasto.html'
+      WpPl:
+        :url: 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
+      InteriaPl:
+        :url: 'http://pogoda.interia.pl/miasta?id=11875'
+      WorldWeatherOnline:
+        :key: 'api key'
 
+= Fetching
 
-== Wp.pl
+  result = WeatherFetcher::Fetcher.fetch(@defs)
 
-  weathers = WeatherFetcher::Provider::WpPl.new(defs).fetch
+= Providers
 
-Where _defs_ is something like this:
-
-  - :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
-    :city: 'Bydgoszcz'
-    :country: 'Poland'
-    :coord:
-      :lat: 53.128893
-      :lon: 18.006363
-
-
-== Interia.pl
-
-  weathers = WeatherFetcher::Provider::InteriaPl.new(defs).fetch
-
-Where _defs_ is something like this:
-
-  - :url: 'http://pogoda.interia.pl/miasta?id=11721'
-    :city: 'Inowrocław'
-    :country: 'Poland'
-    :coord:
-      :lat: 52.799264
-      :lon: 18.259935
-
-
+* Onet.pl
+* Wp.pl
+* Interia.pl
+* WorldWeatherOnline (free api key required)
+* and 4 metar providers
+ 
 == Contributing to weather_fetcher
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
