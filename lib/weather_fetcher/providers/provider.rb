@@ -6,8 +6,6 @@ module WeatherFetcher
 
     # Create an instance, definitions can be set here
     def initialize(_defs = Array.new)
-      puts _defs.to_yaml
-
       @weathers = Array.new
       self.defs = _defs
     end
