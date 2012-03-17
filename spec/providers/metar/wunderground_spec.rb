@@ -1,4 +1,4 @@
-describe "WeatherFetcher::Provider::Wunderground", :ready => true do
+describe "WeatherFetcher::Provider::Wunderground" do
   before :each do
     #@defs = load_fixture('wp_pl')
     #@defs.size.should > 0

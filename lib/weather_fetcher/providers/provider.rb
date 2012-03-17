@@ -51,7 +51,7 @@ module WeatherFetcher
       end
       # add to result array
       @weathers += a
-      
+
       return a
     end
 

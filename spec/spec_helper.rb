@@ -21,3 +21,8 @@ end
 def cities_defs
   load_fixture('main')
 end
+
+def cities_defs_only_metar
+  h = cities_defs
+  h.collect{|c| { :metar => c[:metar] } }
+end

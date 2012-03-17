@@ -6,13 +6,6 @@ module WeatherFetcher
 
     TYPE = :metar
 
-    def initialize(*args)
-      @metars = Array.new
-      super(*args)
-    end
-
-    attr_reader :metars
-
     # Get processed weather for one definition
     def fetch_and_process_single(p)
       return nil unless can_fetch?(p)
@@ -20,6 +13,7 @@ module WeatherFetcher
       url = url_for_metar(metar(p))
       body = fetch_url(url)
       metars = process(body)
+      metars = [ metars ] unless metars.kind_of?(Array)
       processed = Array.new
 
       metars.each do |m|

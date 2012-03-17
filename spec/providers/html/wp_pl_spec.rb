@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "WeatherFetcher::Provider::WpPl", :ready => true do
+describe "WeatherFetcher::Provider::WpPl" do
   before :each do
     @defs = cities_defs
   end
