@@ -23,9 +23,9 @@ describe "WeatherFetcher" do
     end
 
     it "should fetch using main class" do
-      result = WeatherFetcher::Fetcher.fetch()
+      result = WeatherFetcher::Fetcher.fetch(@defs)
+      result.size.should > 1
     end
-
 
   end
 

@@ -47,7 +47,7 @@ module WeatherFetcher
       a = Array.new
       defs.each do |d|
         p = fetch_and_process_single(d)
-        a += p
+        a += p unless p.nil?
       end
       # add to result array
       @weathers += a
