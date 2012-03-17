@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "simple_metar_parser"
+gem "simple_metar_parser", ">= 0.0.1"
 
 group :development do
   gem "rspec", "~> 2.3.0"

@@ -1,8 +1,8 @@
-describe "WeatherFetcher::Provider::AviationWeather", :html => false do
+require 'spec_helper'
+
+describe WeatherFetcher::Provider::AviationWeather do
   before :each do
-    #@defs = load_fixture('wp_pl')
-    #@defs.size.should > 0
-    @defs = { :metar_code => 'EPPO' }
+    @defs = cities_defs_only_metar
   end
 
   it "simple fetch" do

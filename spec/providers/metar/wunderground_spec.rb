@@ -1,8 +1,8 @@
-describe "WeatherFetcher::Provider::Wunderground" do
+require 'spec_helper'
+
+describe WeatherFetcher::Provider::Wunderground do
   before :each do
-    #@defs = load_fixture('wp_pl')
-    #@defs.size.should > 0
-    @defs = { :metar_code => 'EPPO' }
+    @defs = cities_defs_only_metar
   end
 
   it "simple fetch" do
@@ -10,6 +10,6 @@ describe "WeatherFetcher::Provider::Wunderground" do
     weathers = f.fetch
     weathers.should == f.weathers
 
-    puts weathers.to_yaml
+    # puts weathers.to_yaml
   end
 end

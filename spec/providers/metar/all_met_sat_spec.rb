@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "WeatherFetcher::Provider::AllMetSat", :ready => true do
+describe WeatherFetcher::Provider::AllMetSat do
   before :each do
-    @defs = cities_defs
+    @defs = cities_defs_only_metar
   end
 
   it "simple fetch" do
@@ -10,6 +10,6 @@ describe "WeatherFetcher::Provider::AllMetSat", :ready => true do
     weathers = f.fetch
     weathers.should == f.weathers
 
-    puts weathers.to_yaml
+    # puts weathers.to_yaml
   end
 end

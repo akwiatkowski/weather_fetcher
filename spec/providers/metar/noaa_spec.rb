@@ -9,6 +9,7 @@ describe WeatherFetcher::Provider::Noaa do
     f = WeatherFetcher::Provider::Noaa.new(@defs)
     weathers = f.fetch
     weathers.should == f.weathers
+
     #puts weathers.to_yaml
     #puts f.weathers.to_yaml
   end

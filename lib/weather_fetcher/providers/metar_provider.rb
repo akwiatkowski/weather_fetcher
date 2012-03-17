@@ -13,26 +13,26 @@ module WeatherFetcher
       url = url_for_metar(metar(p))
       body = fetch_url(url)
       metars = process(body)
-      metars = [ metars ] unless metars.kind_of?(Array)
+      metars = [metars] unless metars.kind_of?(Array)
       processed = Array.new
 
       metars.each do |m|
         m = SimpleMetarParser::Parser.parse(m)
 
-        # if m.valid?
-        processed << {
-          :time_created => Time.now,
-          :time_from => m.time_from,
-          :time_to => m.time_to,
-          :temperature => m.temperature.degrees,
-          :pressure => m.pressure.hpa,
-          :wind_kmh => m.wind.kmh,
-          :wind => m.wind.mps,
-          :snow_metar => m.specials.snow_metar,
-          :rain_metar => m.specials.rain_metar,
-          :provider => self.class.provider_name
-        }
-        # end
+        if m.valid?
+          processed << {
+            :time_created => Time.now,
+            :time_from => m.time_from,
+            :time_to => m.time_to,
+            :temperature => m.temperature.degrees,
+            :pressure => m.pressure.hpa,
+            :wind_kmh => m.wind.kmh,
+            :wind => m.wind.mps,
+            :snow_metar => m.specials.snow_metar,
+            :rain_metar => m.specials.rain_metar,
+            :provider => self.class.provider_name
+          }
+        end
 
       end
 
