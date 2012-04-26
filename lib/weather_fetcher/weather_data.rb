@@ -27,7 +27,17 @@ module WeatherFetcher
       return ao
     end
 
-    attr_reader :temperature, :wind, :time_from, :time_to
+    # Mark this weather as just downloaded
+    def just_fetched!
+      @fetch_time ||= Time.now
+    end
+
+    def next_within!(_interval)
+      # just_fetched!
+      @next_fetch_time = @fetch_time + _interval
+    end
+
+    attr_reader :temperature, :wind, :time_from, :time_to, :fetch_time, :next_fetch_time
 
   end
 end

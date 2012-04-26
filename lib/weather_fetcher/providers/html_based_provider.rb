@@ -33,5 +33,9 @@ module WeatherFetcher
       end
     end
 
+    def self.weather_updated_every
+      4*HOUR
+    end
+
   end
 end

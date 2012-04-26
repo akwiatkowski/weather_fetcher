@@ -4,6 +4,9 @@ module WeatherFetcher
     # kind of provider: standard, html (self web based), gem (other gem)
     TYPE = :standard
 
+    # just a constant, seconds in 1 hour
+    HOUR = 3600
+
     # Create an instance, definitions can be set here
     def initialize(_defs = Array.new)
       @weathers = Array.new
@@ -47,6 +50,11 @@ module WeatherFetcher
       a = Array.new
       defs.each do |d|
         p = fetch_and_process_single(d)
+        p.each do |pw|
+          pw.just_fetched!
+          pw.next_within!(self.class.weather_updated_every)
+        end
+        
         a += p unless p.nil?
       end
       # add to result array
