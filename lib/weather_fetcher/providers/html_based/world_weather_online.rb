@@ -8,6 +8,11 @@ module WeatherFetcher
       "WorldWeatherOnline"
     end
 
+    # How often weather is updated
+    def self.weather_updated_every
+      12*HOUR - 240
+    end
+
     # This provider required API key
     def self.api=(_api)
       @@api = _api
@@ -84,7 +89,7 @@ module WeatherFetcher
 
       end
 
-      return weather_archives.collect { |w| WeatherData.factory(w) }
+      return WeatherData.factory(weather_archives)
 
     end
 

@@ -11,12 +11,20 @@ end
 describe WeatherFetcher::Provider::WorldWeatherOnline do
   before :each do
     @defs = cities_defs
+    @klass = WeatherFetcher::Provider::WorldWeatherOnline
   end
 
   it "simple fetch" do
-    f = WeatherFetcher::Provider::WorldWeatherOnline.new(@defs)
+    f = @klass.new(@defs)
     weathers = f.fetch
     weathers.should == f.weathers
+    weathers.size.should > 1
+    weathers.first.fetch_time.should be_within(10).of(Time.now)
+    weathers.first.next_fetch_time.should be_within(10).of(Time.now + @klass.weather_updated_every)
+
+    @klass.weather_updated_every.should > 11 * 3600
+    @klass.weather_updated_every.should <= 24 * 3600
+
   end
 
   # TODO add some tests
