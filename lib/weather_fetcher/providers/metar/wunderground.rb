@@ -10,7 +10,9 @@ module WeatherFetcher
 
     def process(string)
       reg = /<div class=\"textReport\">\s*METAR\s*([^<]*)<\/div>/
-      string = string.scan(reg).first.first
+      _s = string.scan(reg)
+      return nil if _s.size == 0
+      string = _s.first.first
       string.gsub!(/\n/, ' ')
       string.gsub!(/\t/, ' ')
       string.gsub!(/\s{2,}/, ' ')
