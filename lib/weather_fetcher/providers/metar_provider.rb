@@ -10,8 +10,10 @@ module WeatherFetcher
     def fetch_and_process_single(p)
       return nil unless can_fetch?(p)
 
+      @pre_download = Time.now
       url = url_for_metar(metar(p))
       body = fetch_url(url)
+      @pre_process = Time.now
       metars = process(body)
       metars = [metars] unless metars.kind_of?(Array)
       processed = Array.new
@@ -36,7 +38,11 @@ module WeatherFetcher
 
       end
 
-      return WeatherData.factory(processed)
+      processed = WeatherData.factory(processed)
+      @post_process = Time.now
+      store_time_costs(processed)
+
+      return processed
     end
 
     def self.provider_name

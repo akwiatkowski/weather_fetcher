@@ -2,6 +2,9 @@
 
 module WeatherFetcher
   class Provider::AllMetSat < MetarProvider
+    # this provider is turned off because long response time
+    # typical website response - 5s
+    SLOW = 5.0
 
     def url_for_metar(metar_city)
       u = "http://pl.allmetsat.com/metar-taf/polska.php?icao=#{metar_city.upcase}"

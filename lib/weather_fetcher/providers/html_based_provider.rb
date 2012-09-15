@@ -9,9 +9,14 @@ module WeatherFetcher
     # Get processed weather for one definition
     def fetch_and_process_single(p)
       return nil unless can_fetch?(p)
-      
+
+      @pre_download = Time.now
       body = fetch_url(url(p))
+      @pre_process = Time.now
       processed = process(body)
+      @post_process = Time.now
+      store_time_costs(processed)
+
       return processed
     end
 

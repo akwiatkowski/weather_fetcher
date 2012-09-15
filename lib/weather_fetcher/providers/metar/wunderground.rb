@@ -2,6 +2,10 @@
 
 module WeatherFetcher
   class Provider::Wunderground < MetarProvider
+    # this provider is turned off because quite long response time
+    # and because there are 2 other faster metar providers available
+    # typical website response - 1s
+    SLOW = 1.1
 
     def url_for_metar(metar_city)
       u = "http://www.wunderground.com/Aviation/index.html?query=#{metar_city.upcase}"

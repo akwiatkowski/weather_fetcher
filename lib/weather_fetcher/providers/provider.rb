@@ -68,8 +68,13 @@ module WeatherFetcher
     def fetch_and_process_single(d)
       return nil unless can_fetch?
 
+      @pre_download = Time.now
       body = fetch_url(url)
+      @pre_process = Time.now
       processed = process(body)
+      @post_process = Time.now
+      store_time_costs(processed)
+
       return processed
     end
 
@@ -93,6 +98,13 @@ module WeatherFetcher
     # Return Hash of parameters used for current provider
     def provider_params(p)
       return p[:classes][short_class_name]
+    end
+
+    def store_time_costs(_processed)
+      _processed.each do |p|
+        p.time_costs[:download_time] = @pre_process - @pre_download
+        p.time_costs[:process_time] = @post_process - @pre_process
+      end
     end
 
   end

@@ -2,9 +2,9 @@
 module WeatherFetcher
   class Fetcher
 
-    def self.fetch(p)
+    def self.fetch(p, max_response_time = 0.8)
       require 'yaml'
-      classes = ProviderList.providers
+      classes = ProviderList.providers(max_response_time)
       result = Array.new
 
       classes.each do |c|

@@ -2,9 +2,10 @@
 module WeatherFetcher
   class WeatherData
 
-    # TODO move to other gem
+    attr_accessor :time_costs
 
     def initialize(h = { })
+      @time_costs = Hash.new
       @h = h
       @h.keys.each do |k|
         self.instance_variable_set("@#{k}".to_sym, @h[k])
