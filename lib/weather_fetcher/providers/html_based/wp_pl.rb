@@ -4,7 +4,7 @@ module WeatherFetcher
   class Provider::WpPl < HtmlBasedProvider
 
     def self.provider_name
-      "Interia.pl"
+      "Wp.pl"
     end
 
     def process(string)
