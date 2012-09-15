@@ -102,7 +102,7 @@ module WeatherFetcher
         :pressure => node["pressure"].to_f / 3.6,
         :rain => node["precipMM"].to_f / 3.6,
         :snow => nil,
-        :weather_provider_id => @id
+        :provider => self.class.provider_name
       }
     end
 

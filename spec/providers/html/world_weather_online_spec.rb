@@ -21,6 +21,9 @@ describe WeatherFetcher::Provider::WorldWeatherOnline do
     weathers.size.should > 1
     weathers.first.fetch_time.should be_within(10).of(Time.now)
     weathers.first.next_fetch_time.should be_within(10).of(Time.now + @klass.weather_updated_every)
+    weathers.each do |w|
+      w.provider.should == WeatherFetcher::Provider::WorldWeatherOnline.provider_name
+    end
 
     @klass.weather_updated_every.should > 11 * 3600
     @klass.weather_updated_every.should <= 24 * 3600
