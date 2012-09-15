@@ -50,11 +50,12 @@ module WeatherFetcher
       a = Array.new
       defs.each do |d|
         p = fetch_and_process_single(d)
+        p = [] if p.nil?
         p.each do |pw|
           pw.just_fetched!
           pw.next_within!(self.class.weather_updated_every)
         end
-        
+
         a += p unless p.nil?
       end
       # add to result array
