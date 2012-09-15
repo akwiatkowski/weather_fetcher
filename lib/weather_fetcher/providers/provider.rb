@@ -101,6 +101,7 @@ module WeatherFetcher
     end
 
     def store_time_costs(_processed)
+      return unless _processed.kind_of?(Array)
       _processed.each do |p|
         p.time_costs[:download_time] = @pre_process - @pre_download
         p.time_costs[:process_time] = @post_process - @pre_process
