@@ -9,7 +9,6 @@ module WeatherFetcher
       @h = h
       @h.keys.each do |k|
         self.instance_variable_set("@#{k}".to_sym, @h[k])
-        #send :attr_accessor, k
       end
     end
 
@@ -38,7 +37,9 @@ module WeatherFetcher
       @next_fetch_time = @fetch_time + _interval
     end
 
-    attr_reader :temperature, :wind, :time_from, :time_to, :fetch_time, :next_fetch_time
+    attr_reader :time_created, :time_from, :time_to, :fetch_time, :next_fetch_time,
+      :temperature, :wind, :pressure, :wind_kmh, :snow, :rain,
+      :provider
 
   end
 end
