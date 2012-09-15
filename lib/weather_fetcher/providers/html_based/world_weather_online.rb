@@ -51,24 +51,30 @@ module WeatherFetcher
       current_time = Time.create_time_from_string_12_utc(nil, current["observation_time"])
 
       h = process_node(current)
-      h.merge(
+      hc = h.clone.merge(
         {
+          :wwo_type => :current,
           :time_created => Time.now,
           :time_from => current_time - 3600,
           :time_to => current_time
         }
       )
-      weather_archives << h
+      weather_archives << hc
 
       # prediction
       predictions = result["data"]["weather"]
       predictions.each do |p|
         h = process_node(p)
-        h[:pressure] = nil
+
+        # is always 0
+        [:pressure, :cloud_cover, :humidity, :visibility].each do |k|
+          h.delete(k)
+        end
 
         # create 2 records using tempMinC and tempMaxC
-        hl = h.merge(
+        hl = h.clone.merge(
           {
+            :wwo_type => :prediction_temp_low,
             :time_created => Time.now,
             :time_from => Time.create_time_from_string(p["date"], "0:00") - 4 * 3600,
             :time_to => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
@@ -78,8 +84,10 @@ module WeatherFetcher
         weather_archives << hl
 
         # and high
-        hh = h.merge(
+        hh = h.clone.merge(
           {
+            :wwo_type => :prediction_temp_high,
+            :time_created => Time.now,
             :time_from => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
             :time_to => Time.create_time_from_string(p["date"], "0:00") + 20 * 3600,
             :temperature => p["tempMaxC"].to_i

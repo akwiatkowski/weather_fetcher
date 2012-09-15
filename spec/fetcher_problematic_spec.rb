@@ -47,6 +47,6 @@ describe WeatherFetcher do
       # puts wd.cloud_cover, wd.humidity, wd.visibility
     end
 
-    # puts _res.inspect
+    # puts _res.to_yaml
   end
 end
