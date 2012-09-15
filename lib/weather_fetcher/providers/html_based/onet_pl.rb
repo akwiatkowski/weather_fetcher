@@ -9,32 +9,25 @@ module WeatherFetcher
 
     def process(string)
       a = Array.new
-      a += WeatherData.factory( _process_details(string) )
-      a += WeatherData.factory( _process_daily(string) )
+      a += WeatherData.factory(_process_body(string))
       return a
     end
 
     # Process response body and rip out weather data, details
-    def _process_details(body_raw)
+    def _process_body(body_raw)
 
       body_tmp = body_raw.downcase
-      #    if body_tmp =~ /szczeg..owa(.*)Prognoza/
-      #      body = $1
-      #    else
-      #      return []
-      #    end
       body = body_tmp
 
-      temperatures = body.scan(/<b\s*title=\"temperatura\">([^<]*)<\/b>/)
-      pressures = body.scan(/\>(\d*)\s*hpa\s*\</)
+      times = body.scan(/<span class=\"time\">godz. <strong>(\d+)-(\d+)/i)
+      temperatures = body.scan(/<span class="temp">\s*(-*\d+)[^<]+<\/span>/i)
+      pressures = body.scan(/(\d*)\s*hpa/i)
       winds = body.scan(/(\d*)\s*km\/h/)
-      snows = body.scan(/nieg:<\/td><td class=\"[^"]*\">\s*([0-9.]*)\s*mm</)
-      rains = body.scan(/eszcz:<\/td><td class=\"[^"]*\">\s*([0-9.]*)\s*mm</)
-
-      # time now
-      time_now = body.scan(/<span class="ar2b gold">teraz <\/span><span class="ar2 gold">(\d*)-(\d*)<\/span>/)
-      # time soon
-      time_soon = body.scan(/<span class="ar2b gold">wkr.tce <\/span><span class="ar2 gold">(\d*)-(\d*)<\/span>/)
+      # no more snow :(
+      #snows = body.scan(/nieg:<\/td><td class=\"[^"]*\">\s*([0-9.]*)\s*mm</)
+      snow = []
+      #rains = body.scan(/Deszcz:\s*<\/label>\s*([0-9,]+)\s*mm/i)
+      rains = body.scan(/Deszcz:[^0-9]*([0-9,]+)\s*mm/i)
 
       unix_time_today = Time.mktime(
         Time.now.year,
@@ -42,120 +35,79 @@ module WeatherFetcher
         Time.now.day,
         0, 0, 0, 0)
 
-      unix_time_now_from = unix_time_today + 3600 * time_now[0][0].to_i
-      unix_time_now_to = unix_time_today + 3600 * time_now[0][1].to_i
-      if time_now[0][1].to_i < time_now[0][0].to_i
-        # next day
-        unix_time_now_to += 24 * 3600
-      end
+      # should be ok
+      # puts times.size, temperatures.size, pressures.size, winds.size, rains.size
+      # puts times.inspect, temperatures.inspect, pressures.inspect, winds.inspect, rains.inspect
 
-      unix_time_soon_from = unix_time_today + 3600 * time_soon[0][0].to_i
-      unix_time_soon_to = unix_time_today + 3600 * time_soon[0][1].to_i
-      if time_soon[0][1].to_i < time_soon[0][0].to_i
-        # next day
-        unix_time_soon_to += 24 * 3600
-      end
-      if time_now[0][0].to_i > time_soon[0][0].to_i
-        # time soon is whole new day
-        unix_time_soon_from += 24 * 3600
-        unix_time_soon_to += 24 * 3600
-      end
+      data = Array.new
 
-      data = [
-        {
+      # today
+      (0..3).each do |i|
+        h = {
           :time_created => Time.now,
-          :time_from => unix_time_now_from,
-          :time_to => unix_time_now_to,
-          :temperature => temperatures[0][0].to_f,
+          :time_from => unix_time_today + times[i][0].to_i * 3600,
+          :time_to => unix_time_today + times[i][1].to_i * 3600,
+          :temperature => temperatures[1 + i][0].to_f,
           :pressure => pressures[0][0].to_f,
           :wind_kmh => winds[0][0].to_f,
           :wind => winds[0][0].to_f / 3.6,
-          :snow => snows[0][0].to_f,
-          :rain => rains[0][0].to_f,
+          :snow => nil, #snows[0][0].to_f,
+          :rain => rains[0][0].gsub(/,/, '.').to_f,
           :provider => self.class.provider_name
-        },
-        {
+        }
+        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
+
+        data << h
+      end
+
+      # tomorrow
+      (4..7).each do |i|
+        h = {
           :time_created => Time.now,
-          :time_from => unix_time_soon_from,
-          :time_to => unix_time_soon_to,
-          :temperature => temperatures[1][0].to_f,
+          :time_from => unix_time_today + times[i][0].to_i * 3600 + 24*3600,
+          :time_to => unix_time_today + times[i][1].to_i * 3600 + 24*3600,
+          :temperature => temperatures[6 + i][0].to_f,
           :pressure => pressures[1][0].to_f,
           :wind_kmh => winds[1][0].to_f,
           :wind => winds[1][0].to_f / 3.6,
-          :snow => snows[1][0].to_f,
-          :rain => rains[1][0].to_f,
+          :snow => nil, #snows[0][0].to_f,
+          :rain => rains[1][0].gsub(/,/, '.').to_f,
           :provider => self.class.provider_name
         }
-      ]
+        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
 
-      return data
-    end
-
-    # Process response body and rip out weather data, daily
-    def _process_daily(body_raw)
-
-      body_tmp = body_raw.downcase
-      body = body_tmp
-
-      #times = time_now = body.scan(/<span class=\"ar2 gold\">([0-9.]+)<\/span>/)
-      times = body.scan(/<span class=\"ar2 gold\">(\d{1,2})\.(\d{1,2})\.(\d{4})<\/span>/)
-      times = times.collect { |t|
-        t_from = Time.mktime(
-          t[2].to_i,
-          t[1].to_i,
-          t[0].to_i,
-          0, 0, 0, 0)
-
-        { :time_from => t_from, :time_to => t_from + 24*3600 }
-      }
-      #puts times.size
-      #puts times.inspect
-
-      temperatures = body.scan(/<span title=\"temperatura w dzie.\">([-.0-9]+)<\/span>\s*<span title=\"temperatura w nocy\"[^>]*>([-.0-9]+)<\/span>/)
-      temperatures = temperatures.collect { |t|
-        { :temperature_night => t[1].to_f, :temperature_day => t[0].to_f, :temperature => (t[0].to_f + t[1].to_f)/2.0 }
-      }
-      #puts temperatures.size
-      #puts temperatures.inspect
-      #exit!
-
-      #pressures = body.scan(/>(\d+)\s*hpa</)
-      pressures = body.scan(/(\d+)\s*hpa/)
-      pressures = pressures.collect { |t| t[0].to_i }
-      # puts pressures.inspect
-
-      # wind speed in m/s
-      winds = body.scan(/(\d+)\s*km\/h/)
-      winds = winds.collect { |t| t[0].to_f / 3.6 }
-      # puts winds.inspect
-
-      snows = body.scan(/nieg:<\/td><td class="[^"]*">([0-9.]*)\s*mm</)
-      snows = snows.collect { |t| t[0].to_f }
-      # puts snows.inspect
-
-      rains = body.scan(/eszcz:<\/td><td class=\"[^"]*\">\s*([0-9.]*)\s*mm</)
-      rains = rains.collect { |t| t[0].to_f }
-      # puts rains.inspect
-
-
-      data = Array.new
-      # temperatures array because some last times is for detailed weather prediction
-      # not for days
-      (0...(temperatures.size)).each do |i|
-        h = {
-          :time_created => Time.now,
-          :time_from => times[i][:time_from],
-          :time_to => times[i][:time_to],
-          :temperature => temperatures[i][:temperature],
-          :pressure => pressures[i],
-          :wind_kmh => winds[i] * 3.6,
-          :wind => winds[i],
-          :snow => snows[i],
-          :rain => rains[i],
-          :provider => self.class.provider_name
-        }
         data << h
       end
+      # puts data.to_yaml
+
+      # longer
+      dates = body.scan(/<time datetime=\"(\d{4})-(\d{1,2})-(\d{1,2})\">/i)
+
+      (0..10).each do |i|
+        unix_time = Time.mktime(
+          dates[i][0].to_i,
+          dates[i][1].to_i,
+          dates[i][2].to_i
+        )
+        # puts unix_time, dates[i].inspect
+
+        h = {
+          :time_created => Time.now,
+          :time_from => unix_time,
+          :time_to => unix_time + 24*3600,
+          :temperature => temperatures[13 + i][0].to_f,
+          :pressure => pressures[3 + i][0].to_f,
+          :wind_kmh => winds[3 + i][0].to_f,
+          :wind => winds[3 + i][0].to_f / 3.6,
+          :snow => nil, #snows[0][0].to_f,
+          :rain => rains[3 + i][0].gsub(/,/, '.').to_f,
+          :provider => self.class.provider_name
+        }
+        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
+
+        data << h
+      end
+      # puts data.to_yaml
 
       return data
     end
