@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "weather_fetcher"
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
     "lib/weather_fetcher/providers/metar/wunderground.rb",
     "lib/weather_fetcher/providers/metar_provider.rb",
     "lib/weather_fetcher/providers/provider.rb",
+    "lib/weather_fetcher/scheduler_helper.rb",
     "lib/weather_fetcher/server.rb",
     "lib/weather_fetcher/utils/time.rb",
     "lib/weather_fetcher/weather_data.rb"
