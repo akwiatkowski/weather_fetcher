@@ -83,7 +83,8 @@ module WeatherFetcher
       # longer
       dates = body.scan(/<time datetime=\"(\d{4})-(\d{1,2})-(\d{1,2})\">/i)
 
-      (0..10).each do |i|
+      # sometimes 10, sometimes 9
+      (0..9).each do |i|
         unix_time = Time.mktime(
           dates[i][0].to_i,
           dates[i][1].to_i,

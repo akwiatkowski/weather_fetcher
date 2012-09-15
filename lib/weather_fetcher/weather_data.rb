@@ -39,7 +39,9 @@ module WeatherFetcher
 
     attr_reader :time_created, :time_from, :time_to, :fetch_time, :next_fetch_time,
       :temperature, :wind, :pressure, :wind_kmh, :snow, :rain,
-      :provider
+      :rain_metar, :snow_metar,
+      :provider,
+      :metar_string
 
   end
 end
