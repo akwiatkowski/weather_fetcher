@@ -5,6 +5,8 @@ module WeatherFetcher
   class MetarProvider < HtmlBasedProvider
 
     TYPE = :metar
+    # treat metars as not current when time_from is not within time range
+    MAX_METAR_TIME_THRESHOLD = 4*3600
 
     # Get processed weather for one definition
     def fetch_and_process_single(p)
@@ -21,7 +23,7 @@ module WeatherFetcher
       metars.each do |m|
         m = SimpleMetarParser::Parser.parse(m)
 
-        if m.valid?
+        if m.valid? and (m.time_from - Time.now).abs < MAX_METAR_TIME_THRESHOLD
           processed << {
             :time_created => Time.now,
             :time_from => m.time_from,
@@ -32,7 +34,8 @@ module WeatherFetcher
             :wind => m.wind.mps,
             :snow_metar => m.specials.snow_metar,
             :rain_metar => m.specials.rain_metar,
-            :provider => self.class.provider_name
+            :provider => self.class.provider_name,
+            :metar_string => m.raw
           }
         end
 
