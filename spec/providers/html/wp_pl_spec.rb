@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "WeatherFetcher::Provider::WpPl" do
+describe WeatherFetcher::Provider::WpPl do
   before :each do
     @defs = cities_defs
     @klass = WeatherFetcher::Provider::WpPl

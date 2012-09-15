@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
-describe "WeatherFetcher" do
+describe WeatherFetcher do
   it "simple stuff" do
     WeatherFetcher.class.should == Module
   end
