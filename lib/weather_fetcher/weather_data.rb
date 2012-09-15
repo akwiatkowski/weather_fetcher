@@ -40,6 +40,7 @@ module WeatherFetcher
     attr_reader :time_created, :time_from, :time_to, :fetch_time, :next_fetch_time,
       :temperature, :wind, :pressure, :wind_kmh, :snow, :rain,
       :rain_metar, :snow_metar,
+      :cloud_cover, :humidity, :visibility, # available in WorldWeatherOnline
       :provider,
       :metar_string
 

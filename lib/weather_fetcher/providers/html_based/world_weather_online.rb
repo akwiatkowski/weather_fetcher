@@ -96,13 +96,18 @@ module WeatherFetcher
 
     # Process json node to Hash for AR
     def process_node(node)
+      # http://www.worldweatheronline.com/marine-weather-api.aspx
       return {
         :temperature => node["temp_C"].to_i,
         :wind => node["windspeedKmph"].to_f / 3.6,
-        :pressure => node["pressure"].to_f / 3.6,
-        :rain => node["precipMM"].to_f / 3.6,
+        :pressure => node["pressure"].to_f,
+        :rain => node["precipMM"].to_f,
         :snow => nil,
-        :provider => self.class.provider_name
+        :provider => self.class.provider_name,
+
+        :cloud_cover => node["cloudcover"].to_f,
+        :humidity => node["humidity"].to_f,
+        :visibility => node["visibility"].to_f,
       }
     end
 

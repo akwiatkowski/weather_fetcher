@@ -30,4 +30,23 @@ describe WeatherFetcher do
     _res = _p.weathers
     _res.should be_kind_of(Array)
   end
+
+  it "should fetch Bydgoszcz using WeatherFetcher::Provider::WorldWeatherOnline" do
+    _d = { :name=>"Bydgoszcz", :country=>"Poland", :metar=>"EPBY", :coords=>{ :lat=>53.0968, :lon=>17.9777 }, :classes=>{ "OnetPl"=>{ :url=>"http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bydgoszcz,9315.html" }, "WpPl"=>{ :url=>"http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html" }, "InteriaPl"=>{ :url=>"http://pogoda.interia.pl/miasta?id=11666" } } }
+    _p = WeatherFetcher::Provider::WorldWeatherOnline.new(_d)
+    _p.fetch
+    _res = _p.weathers
+    _res.should be_kind_of(Array)
+
+    _res.each do |wd|
+      # TODO why pressure is nil?
+      unless wd.pressure.nil?
+        wd.pressure.should > 900.0
+        wd.pressure.should < 1100.0
+      end
+      # puts wd.cloud_cover, wd.humidity, wd.visibility
+    end
+
+    # puts _res.inspect
+  end
 end
