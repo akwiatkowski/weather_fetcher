@@ -14,6 +14,10 @@ describe WeatherFetcher do
     _res = WeatherFetcher::Fetcher.fetch(_d)
     _res.should be_kind_of(Array)
     _res.size.should > 0
+
+    _res.each do |wd|
+      wd.city.should == "Mogilno"
+    end
   end
 
   it "should fetch Bydgoszcz" do
@@ -21,6 +25,10 @@ describe WeatherFetcher do
     _res = WeatherFetcher::Fetcher.fetch(_d)
     _res.should be_kind_of(Array)
     _res.size.should > 0
+
+    _res.each do |wd|
+      wd.city.should == "Bydgoszcz"
+    end
   end
 
   it "should fetch south pole using WeatherFetcher::Provider::WorldWeatherOnline" do
@@ -29,6 +37,12 @@ describe WeatherFetcher do
     _p.fetch
     _res = _p.weathers
     _res.should be_kind_of(Array)
+
+    _res.each do |wd|
+      wd.is_metar?.should if wd.provider == WeatherFetcher::MetarProvider.provider_name
+      wd.is_metar?.should if wd.provider == "MetarProvider"
+      wd.city.should == "Amundsen-Scott"
+    end
   end
 
   it "should fetch Bydgoszcz using WeatherFetcher::Provider::WorldWeatherOnline" do
@@ -39,12 +53,12 @@ describe WeatherFetcher do
     _res.should be_kind_of(Array)
 
     _res.each do |wd|
-      # TODO why pressure is nil?
       unless wd.pressure.nil?
         wd.pressure.should > 900.0
         wd.pressure.should < 1100.0
       end
-      # puts wd.cloud_cover, wd.humidity, wd.visibility
+
+      wd.city.should == "Bydgoszcz"
     end
 
     # puts _res.to_yaml

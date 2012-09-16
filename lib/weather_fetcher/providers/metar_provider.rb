@@ -44,6 +44,7 @@ module WeatherFetcher
       processed = WeatherData.factory(processed)
       @post_process = Time.now
       store_time_costs(processed)
+      store_city_definition(processed, p)
 
       return processed
     end

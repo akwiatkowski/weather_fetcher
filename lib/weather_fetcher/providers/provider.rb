@@ -69,11 +69,12 @@ module WeatherFetcher
       return nil unless can_fetch?
 
       @pre_download = Time.now
-      body = fetch_url(url)
+      body = fetch_url(url(d))
       @pre_process = Time.now
       processed = process(body)
       @post_process = Time.now
       store_time_costs(processed)
+      store_city_definition(processed, d)
 
       return processed
     end
@@ -105,6 +106,13 @@ module WeatherFetcher
       _processed.each do |p|
         p.time_costs[:download_time] = @pre_process - @pre_download
         p.time_costs[:process_time] = @post_process - @pre_process
+      end
+    end
+
+    def store_city_definition(_processed, _city_def)
+      return unless _processed.kind_of?(Array)
+      _processed.each do |p|
+        p.city_hash = _city_def
       end
     end
 

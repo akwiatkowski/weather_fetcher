@@ -16,6 +16,7 @@ module WeatherFetcher
       processed = process(body)
       @post_process = Time.now
       store_time_costs(processed)
+      store_city_definition(processed, p)
 
       return processed
     end
