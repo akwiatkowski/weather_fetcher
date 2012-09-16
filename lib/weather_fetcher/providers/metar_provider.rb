@@ -72,7 +72,7 @@ module WeatherFetcher
 
     # How often weather is updated
     def self.weather_updated_every
-      15*60
+      10*60
     end
 
   end
