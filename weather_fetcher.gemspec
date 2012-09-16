@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "weather_fetcher"
-  s.version = "0.0.12"
+  s.version = "0.0.13"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-09-15"
+  s.date = "2012-09-16"
   s.description = "Fetch weather from various Polish websites and via other gems. At the moment it is only polish portal Onet.pl but more providers will come soon."
   s.email = "bobikx@poczta.fm"
   s.extra_rdoc_files = [
