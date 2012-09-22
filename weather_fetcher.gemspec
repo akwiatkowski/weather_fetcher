@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "weather_fetcher"
-  s.version = "0.0.14"
+  s.version = "0.0.15"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = "2012-09-16"
-  s.description = "Fetch weather from various Polish websites and via other gems. At the moment it is only polish portal Onet.pl but more providers will come soon."
+  s.date = "2012-09-22"
+  s.description = "At this moment you can fetch weather http://www.worldweatheronline.com/, from various Polish websites (Onet.pl, Wp.pl, Interia.pl) and from some METAR providers. More providers coming soon :)"
   s.email = "bobikx@poczta.fm"
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.licenses = ["LGPLv3"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.15"
-  s.summary = "Fetch weather from various Polish websites and via other gems"
+  s.summary = "Fetch weather from various providers in one place"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
