@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "weather_fetcher"
   gem.homepage = "http://github.com/akwiatkowski/weather_fetcher"
   gem.license = "LGPLv3"
-  gem.summary = %Q{Fetch weather from various Polish websites and via other gems}
-  gem.description = %Q{Fetch weather from various Polish websites and via other gems. At the moment it is only polish portal Onet.pl but more providers will come soon.}
+  gem.summary = %Q{Fetch weather from various providers in one place}
+  gem.description = %Q{At this moment you can fetch weather http://www.worldweatheronline.com/, from various Polish websites (Onet.pl, Wp.pl, Interia.pl) and from some METAR providers. More providers coming soon :)}
   gem.email = "bobikx@poczta.fm"
   gem.authors = ["Aleksander Kwiatkowski"]
   # dependencies defined in Gemfile
