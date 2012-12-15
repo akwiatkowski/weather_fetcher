@@ -19,6 +19,7 @@ module WeatherFetcher
     end
 
     def self.api
+      return nil unless defined?(@@api)
       @@api
     end
 
