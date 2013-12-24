@@ -47,6 +47,16 @@ module WeatherFetcher
           pressure = pressure.to_s.to_f
         end
 
+        rain = w.css(".opady").children.first
+        if rain
+          rain = rain.children[1].to_s.to_f
+        end
+
+        wind = w.css(".wiatrPredkosc").children.first
+        if wind
+          wind = wind.children.first.to_s.to_f
+        end
+
         h = {
           :time_created => Time.now,
           :time_from => time_from,
@@ -54,16 +64,16 @@ module WeatherFetcher
           :temperature => temp,
           :feel_temperature => temp_feel,
           :pressure => pressure,
-          #:wind_kmh => wind,
-          #:wind => wind / 3.6,
+          :wind_kmh => wind,
+          :wind => wind / 3.6,
           #  :snow => nil, #snows[0][0].to_f,
-          #:rain => rain,
+          :rain => rain,
           #:cloud_cover => cloud_cover,
           #:humidity => humidity,
           :provider => self.class.provider_name
         }
 
-        puts h.inspect
+        # puts h.inspect
 
         data << h
       end
