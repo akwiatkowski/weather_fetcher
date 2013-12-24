@@ -6,7 +6,7 @@
     :lon: 16.928329
   :classes:
     OnetPl:
-      :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,poznan,9204.html'
+      :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,poznan,9204.html'
     WpPl:
       :url: 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
     InteriaPl:

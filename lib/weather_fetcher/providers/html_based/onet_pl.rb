@@ -1,5 +1,8 @@
 #encoding: utf-8
 
+require 'nokogiri'
+require 'time'
+
 module WeatherFetcher
   class Provider::OnetPl < HtmlBasedProvider
 
@@ -9,103 +12,44 @@ module WeatherFetcher
 
     def process(string)
       a = Array.new
-      a += WeatherData.factory(_process_body(string))
+      a += WeatherData.factory(_process_body_long_term(string))
       return a
     end
 
     # Process response body and rip out weather data, details
-    def _process_body(body_raw)
-
-      body_tmp = body_raw.downcase
-      body = body_tmp
-
-      times = body.scan(/<span class=\"time\">godz. <strong>(\d+)-(\d+)/i)
-      temperatures = body.scan(/<span class="temp">\s*(-*\d+)[^<]+<\/span>/i)
-      pressures = body.scan(/(\d*)\s*hpa/i)
-      winds = body.scan(/(\d*)\s*km\/h/)
-      # no more snow :(
-      #snows = body.scan(/nieg:<\/td><td class=\"[^"]*\">\s*([0-9.]*)\s*mm</)
-      snow = []
-      #rains = body.scan(/Deszcz:\s*<\/label>\s*([0-9,]+)\s*mm/i)
-      rains = body.scan(/Deszcz:[^0-9]*([0-9,]+)\s*mm/i)
-
-
-
-      # should be ok
-      # puts times.size, temperatures.size, pressures.size, winds.size, rains.size
-      # puts times.inspect, temperatures.inspect, pressures.inspect, winds.inspect, rains.inspect
-
+    def _process_body_long_term(body_raw)
       data = Array.new
+      b = Nokogiri::HTML(body_raw)
 
-      # today
-      (0..3).each do |i|
-        h = {
-          :time_created => Time.now,
-          :time_from => unix_time_today + times[i][0].to_i * 3600,
-          :time_to => unix_time_today + times[i][1].to_i * 3600,
-          :temperature => temperatures[1 + i][0].to_f,
-          :pressure => pressures[0][0].to_f,
-          :wind_kmh => winds[0][0].to_f,
-          :wind => winds[0][0].to_f / 3.6,
-          :snow => nil, #snows[0][0].to_f,
-          :rain => rains[0][0].gsub(/,/, '.').to_f,
-          :provider => self.class.provider_name
-        }
-        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
+      weather_days = b.css(".day-longterm")
+      weather_days.each do |weather_day|
+        time_from = Time.parse(weather_day.css("time").attribute("datetime").value.to_s)
+        temp = weather_day.css(".temp").children.first.to_s.to_f
 
-        data << h
-      end
-
-      # tomorrow
-      (4..7).each do |i|
-        h = {
-          :time_created => Time.now,
-          :time_from => unix_time_today + times[i][0].to_i * 3600 + 24*3600,
-          :time_to => unix_time_today + times[i][1].to_i * 3600 + 24*3600,
-          :temperature => temperatures[6 + i][0].to_f,
-          :pressure => pressures[1][0].to_f,
-          :wind_kmh => winds[1][0].to_f,
-          :wind => winds[1][0].to_f / 3.6,
-          :snow => nil, #snows[0][0].to_f,
-          :rain => rains[1][0].gsub(/,/, '.').to_f,
-          :provider => self.class.provider_name
-        }
-        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
-
-        data << h
-      end
-      # puts data.to_yaml
-
-      # longer
-      dates = body.scan(/<time datetime=\"(\d{4})-(\d{1,2})-(\d{1,2})\">/i)
-
-      # sometimes 10, sometimes 9
-      (0..9).each do |i|
-        unix_time = Time.mktime(
-          dates[i][0].to_i,
-          dates[i][1].to_i,
-          dates[i][2].to_i
-        )
-        # puts unix_time, dates[i].inspect
+        desc = weather_day.css(".details").children.collect { |d| d.to_s.gsub(/\n/, "").gsub(/\t/, "") }
+        pressure = desc[3].to_f
+        wind = desc[7].to_f
+        rain = desc[10].gsub(/,/, '.').to_f
 
         h = {
           :time_created => Time.now,
-          :time_from => unix_time,
-          :time_to => unix_time + 24*3600,
-          :temperature => temperatures[13 + i][0].to_f,
-          :pressure => pressures[3 + i][0].to_f,
-          :wind_kmh => winds[3 + i][0].to_f,
-          :wind => winds[3 + i][0].to_f / 3.6,
-          :snow => nil, #snows[0][0].to_f,
-          :rain => rains[3 + i][0].gsub(/,/, '.').to_f,
+          :time_from => time_from,
+          :time_to => time_from + 24*3600,
+          :temperature => temp,
+          #:feel_temperature => feel_temp,
+          :pressure => pressure,
+          :wind_kmh => wind,
+          :wind => wind / 3.6,
+          #  :snow => nil, #snows[0][0].to_f,
+          :rain => rain,
+          #:cloud_cover => cloud_cover,
+          #:humidity => humidity,
           :provider => self.class.provider_name
         }
-        h[:time_to] += 24*3600 if h[:time_to] < h[:time_from]
-
         data << h
-      end
-      # puts data.to_yaml
 
+        # puts h.inspect
+      end
       return data
     end
 
