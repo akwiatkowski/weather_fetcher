@@ -25,7 +25,8 @@ module WeatherFetcher
 
     # Url for current provider
     def url(p)
-      "http://free.worldweatheronline.com/feed/weather.ashx?key=#{@@api}&q=#{p[:coords][:lat]},#{p[:coords][:lon]}&num_of_days=2&format=json"
+      #"http://free.worldweatheronline.com/feed/weather.ashx?key=#{@@api}&q=#{p[:coords][:lat]},#{p[:coords][:lon]}&num_of_days=2&format=json"
+      "http://api.worldweatheronline.com/free/v1/weather.ashx?q=#{p[:coords][:lat]},#{p[:coords][:lon]}&format=json&num_of_days=5&key=#{@@api}"
     end
 
     def can_fetch?(p)
