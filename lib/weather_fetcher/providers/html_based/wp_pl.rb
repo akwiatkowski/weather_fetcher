@@ -37,14 +37,23 @@ module WeatherFetcher
           temp = temp_day.children.first.to_s.to_f
         end
 
+        temp_feel = w.css(".tempOdczuwalna").children.first
+        if temp_feel
+          temp_feel = temp_feel.children.first.to_s.to_f
+        end
+
+        pressure = w.css("span.cisnienie").children.first
+        if pressure
+          pressure = pressure.to_s.to_f
+        end
 
         h = {
           :time_created => Time.now,
           :time_from => time_from,
           :time_to => time_to,
           :temperature => temp,
-          #:feel_temperature => feel_temp,
-          #:pressure => pressure,
+          :feel_temperature => temp_feel,
+          :pressure => pressure,
           #:wind_kmh => wind,
           #:wind => wind / 3.6,
           #  :snow => nil, #snows[0][0].to_f,
