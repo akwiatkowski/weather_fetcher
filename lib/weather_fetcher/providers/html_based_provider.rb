@@ -1,10 +1,12 @@
 require 'net/http'
+require 'curb'
 
 # All ugly providers who parse even uglier html code and rip off data
 module WeatherFetcher
   class HtmlBasedProvider < Provider
 
     TYPE = :html_based
+    USER_AGENT = "Chrome 32.0.1667.0"
 
     # Get processed weather for one definition
     def fetch_and_process_single(p)
@@ -22,8 +24,20 @@ module WeatherFetcher
     end
 
     # Download url
+    def fetch_url_old(url)
+      s = Net::HTTP.get2(URI.parse(url), { 'User-Agent' => USERAGENT })
+      puts s.inspect, url
+      return s
+    end
+
     def fetch_url(url)
-      return Net::HTTP.get(URI.parse(url))
+      http = Curl::Easy.perform(url) do |curl|
+        curl.headers["User-Agent"] = USER_AGENT
+        curl.enable_cookies = true
+        curl.follow_location = true
+      end
+      s = http.body_str
+      return s
     end
 
     # Url for current provider

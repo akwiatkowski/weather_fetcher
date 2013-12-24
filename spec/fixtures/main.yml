@@ -8,7 +8,7 @@
     OnetPl:
       :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,poznan,9204.html'
     WpPl:
-      :url: 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
+      :url: 'http://pogoda.wp.pl/cid,43384,miasto,Pozna%C5%84,dlugoterminowa.html'
     InteriaPl:
       :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-poznan,cId,27457'
     WorldWeatherOnline:

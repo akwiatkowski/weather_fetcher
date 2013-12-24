@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 
+gem 'curb'
 gem "simple_metar_parser", ">= 0.0.1"
 
 group :development do
