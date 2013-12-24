@@ -10,6 +10,6 @@
     WpPl:
       :url: 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
     InteriaPl:
-      :url: 'http://pogoda.interia.pl/miasta?id=11875'
+      :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-poznan,cId,27457'
     WorldWeatherOnline:
       :key: 'api key'

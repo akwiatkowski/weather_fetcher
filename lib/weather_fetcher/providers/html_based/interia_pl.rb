@@ -1,5 +1,7 @@
 #encoding: utf-8
 
+require 'nokogiri'
+
 module WeatherFetcher
   class Provider::InteriaPl < HtmlBasedProvider
 
@@ -8,122 +10,69 @@ module WeatherFetcher
     end
 
     def process(string)
-      WeatherData.factory( _process(string) )
+      WeatherData.factory(_process(string))
     end
 
     # Process response body and rip out weather data
     def _process(body_raw)
+      data = Array.new
+      b = Nokogiri::HTML(body_raw)
 
-      body = body_raw.downcase
+      weather_days = b.css(".weather-forecast-day")
+      weather_days.each do |d|
+        klass = d.attribute("class").value
+        klass =~ /(\d{4})-(\d{1,2})-(\d{1,2})/
+        t = Time.local($1.to_i, $2.to_i, $3.to_i)
 
-      hours_first = body.scan(/(\d{2})\s*do\s*(\d{2})/)
-      #puts hours_first.inspect
-      hours_add = body.scan(/<td height=\"40\">.*(\d{2})-(\d{2}).*<\/td>/)
-      #puts hours_add.inspect
-      hours = hours_first + hours_add
-      #puts hours.inspect
+        weather_list = d.css("li.weather-entry")
+        weather_list.each do |w|
+          h = Hash.new
 
-      # interia uses min/aesthes./max temperatures, aesth. used
-      temperatures = body.scan(/<span\s*class=\"tex2b\"\s*style=\"font-size:\s*14px;\">(-?\d+)<\/span>/)
-      # there is 'sample' temperature which should be deleted
-      temperatures.delete_at(2) # if temperatures[2] == 5
-      #puts temperatures.inspect
+          hour = w.css(".entry-hour > .hour").children.first.to_s.to_i
+          min = w.css(".entry-hour > .minute").children.first.to_s.to_i
+          time_from = t + hour * 3600 + min * 60
 
-      winds = body.scan(/wiatr:\D*(\d+)\D*km\/h\s*</)
-      #puts winds.inspect
+          puts time_from
+        end
 
-      rains = body.scan(/deszcz:\D*(\d+\.?\d*)\D*mm\s*</)
-      #puts rains.inspect
-
-      snows = body.scan(/nieg:\D*(\d+\.?\d*)\D*mm\s*</)
-      #puts snows.inspect
-
-      pressures = body.scan(/<b>(\d{3,4})<\/b>.*hpa/)
-      #puts pressures.inspect
-
-      # TODO fix it better!
-      #puts rains.inspect
-      #puts snows.inspect
-      if snows.nil? or snows.size < 2
-        snows = [[nil], [nil], [nil]]
-      end
-      if rains.nil? or rains.size < 2
-        rains = [[nil], [nil], [nil]]
       end
 
-      unix_time_today = Time.mktime(
-        Time.now.year,
-        Time.now.month,
-        Time.now.day,
-        0, 0, 0, 0)
+      #days_count = 3
+      #(0...days_count).each do |di|
+      #  day_t = unix_time_today + 24*3600*di
+      #  day_s = day_t.strftime("%Y-%m-%d")
+      #
+      #  css_selector = ".weather-forecast-day.#{day_s} > li.weather-entry"
+      #  puts css_selector
+      #
+      #  weather_list = b.css(css_selector)
+      #  weather_list.each do |w|
+      #    h = Hash.new
+      #
+      #    hour = w.css(".entry-hour > .hour").children.first.to_s.to_i
+      #    min = w.css(".entry-hour > .minute").children.first.to_s.to_i
+      #    time_from = day_t + hour * 3600 + min * 60
+      #
+      #    puts time_from
+      #
+      #  end
+      #end
 
-      unix_time_now_from = unix_time_today + 3600 * hours[0][0].to_i
-      unix_time_now_to = unix_time_today + 3600 * hours[0][1].to_i
-      if hours[0][1].to_i < hours[0][0].to_i
-        # next day
-        unix_time_now_to += 24 * 3600
-      end
 
-      unix_time_soon_from = unix_time_today + 3600 * hours[1][0].to_i
-      unix_time_soon_to = unix_time_today + 3600 * hours[1][1].to_i
-      if hours[1][1].to_i < hours[1][0].to_i
-        # next day
-        unix_time_soon_to += 24 * 3600
-      end
-      if hours[1][0].to_i > hours[1][0].to_i
-        # time soon is whole new day
-        unix_time_soon_from += 24 * 3600
-        unix_time_soon_to += 24 * 3600
-      end
+      #h = {
+      #  :time_created => Time.now,
+      #  :time_from => time_from,
+      #  :time_to => time_from + 3600,
+      #  :temperature => temperatures[1 + i][0].to_f,
+      #  :pressure => pressures[0][0].to_f,
+      #  :wind_kmh => winds[0][0].to_f,
+      #  :wind => winds[0][0].to_f / 3.6,
+      #  :snow => nil, #snows[0][0].to_f,
+      #  :rain => rains[0][0].gsub(/,/, '.').to_f,
+      #  :provider => self.class.provider_name
+      #}
 
-      # if 1 data is for next day morning
-      if hours[0][1].to_i < Time.now.hour
-        unix_time_now_to += 24 * 3600
-        unix_time_now_from += 24 * 3600
-
-        unix_time_soon_to += 24 * 3600
-        unix_time_soon_from += 24 * 3600
-      end
-
-      # TODO zrób auto testy dla innych typów
-      # TODO i dodaj inkrementacje dnia po
-      # if 1 data is for next day morning
-      if unix_time_now_to > unix_time_soon_to
-        unix_time_soon_to += 24 * 3600
-        unix_time_soon_from += 24 * 3600
-      end
-
-      data = [
-        {
-          :time_created => Time.now,
-          :time_from => unix_time_now_from,
-          :time_to => unix_time_now_to,
-          :temperature => temperatures[0][0].to_f,
-          :pressure => pressures[0][0].to_f,
-          :wind_kmh => winds[0][0].to_f,
-          :wind => winds[0][0].to_f / 3.6,
-          :snow => snows[0][0].to_f,
-          :rain => rains[0][0].to_f,
-          :provider => self.class.provider_name
-        },
-        {
-          :time_created => Time.now,
-          :time_from => unix_time_soon_from,
-          :time_to => unix_time_soon_to,
-          :temperature => temperatures[1][0].to_f,
-          :pressure => pressures[1][0].to_f,
-          :wind_kmh => winds[1][0].to_f,
-          :wind => winds[1][0].to_f / 3.6,
-          :snow => snows[1][0].to_f,
-          :rain => rains[1][0].to_f,
-          :provider => self.class.provider_name
-        }
-      ]
-
-      return data
+      return
     end
-
   end
-
 end
-

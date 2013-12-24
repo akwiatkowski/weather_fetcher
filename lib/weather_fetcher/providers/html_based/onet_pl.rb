@@ -29,11 +29,7 @@ module WeatherFetcher
       #rains = body.scan(/Deszcz:\s*<\/label>\s*([0-9,]+)\s*mm/i)
       rains = body.scan(/Deszcz:[^0-9]*([0-9,]+)\s*mm/i)
 
-      unix_time_today = Time.mktime(
-        Time.now.year,
-        Time.now.month,
-        Time.now.day,
-        0, 0, 0, 0)
+
 
       # should be ok
       # puts times.size, temperatures.size, pressures.size, winds.size, rains.size

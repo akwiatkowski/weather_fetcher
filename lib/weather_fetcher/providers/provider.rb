@@ -88,6 +88,14 @@ module WeatherFetcher
       raise NotImplementedError
     end
 
+    def unix_time_today
+      Time.mktime(
+        Time.now.year,
+        Time.now.month,
+        Time.now.day,
+        0, 0, 0, 0)
+    end
+
     def self.short_class_name
       self.to_s.gsub(/^.*::/, '')
     end
