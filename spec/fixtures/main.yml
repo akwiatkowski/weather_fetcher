@@ -11,5 +11,7 @@
       :url: 'http://pogoda.wp.pl/cid,43384,miasto,Pozna%C5%84,dlugoterminowa.html'
     InteriaPl:
       :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-poznan,cId,27457'
+    TwojaPogodaPl:
+      :url: 'http://www.twojapogoda.pl/polska/wielkopolskie/poznan/16dniowa'
     WorldWeatherOnline:
       :key: 'api key'
