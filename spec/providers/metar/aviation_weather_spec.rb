@@ -12,11 +12,13 @@ describe WeatherFetcher::Provider::AviationWeather do
     weathers.should == f.weathers
 
     # so not nice provider
+    # sometimes it doesn't work
 
     if weathers.size > 0
-      weathers.size.should == 1
-      weathers.first.fetch_time.should be_within(10).of(Time.now)
-      weathers.first.next_fetch_time.should be_within(10).of(Time.now + @klass.weather_updated_every)
+      expect(weathers).to eq(f.weathers)
+      expect(weathers.size).to eq(1)
+      expect(weathers.first.fetch_time).to be_within(10).of(Time.now)
+      expect(weathers.first.next_fetch_time).to be_within(10).of(Time.now + @klass.weather_updated_every)
     end
 
     # puts weathers.to_yaml
