@@ -17,17 +17,19 @@ describe WeatherFetcher::Provider::WorldWeatherOnline do
   it "simple fetch" do
     f = @klass.new(@defs)
     weathers = f.fetch
-    weathers.should == f.weathers
-    weathers.size.should > 1
-    weathers.first.fetch_time.should be_within(10).of(Time.now)
-    weathers.first.next_fetch_time.should be_within(10).of(Time.now + @klass.weather_updated_every)
+    expect(weathers).to eq(f.weathers)
+    expect(weathers).not_to match_array([])
+    expect(weathers.first.fetch_time).to be_within(10).of(Time.now)
+    expect(weathers.first.next_fetch_time).to be_within(10).of(Time.now + @klass.weather_updated_every)
+
     weathers.each do |w|
-      w.provider.should == WeatherFetcher::Provider::WorldWeatherOnline.provider_name
+      expect(w.provider).to eq(WeatherFetcher::Provider::WorldWeatherOnline.provider_name)
     end
 
-    @klass.weather_updated_every.should > 11 * 3600
-    @klass.weather_updated_every.should <= 24 * 3600
+    expect(@klass.weather_updated_every).to be > 11 * 3600
+    expect(@klass.weather_updated_every).to be <= 24 * 3600
 
+    # puts weathers.to_yaml
   end
 
   # TODO add some tests
