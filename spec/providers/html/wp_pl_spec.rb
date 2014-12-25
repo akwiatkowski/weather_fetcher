@@ -14,6 +14,6 @@ describe WeatherFetcher::Provider::WpPl do
     expect(weathers.first.fetch_time).to be_within(10).of(Time.now)
     expect(weathers.first.next_fetch_time).to be_within(10).of(Time.now + @klass.weather_updated_every)
 
-    #puts weathers.to_yaml
+    # puts weathers.to_yaml
   end
 end

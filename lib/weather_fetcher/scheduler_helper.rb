@@ -12,7 +12,7 @@ module WeatherFetcher
       providers_to_remove = _wd.select{|w| w.next_fetch_time > Time.now}.collect{|w| w.provider}.uniq
 
       # remove providers
-      recommended = all_providers_classes.select{|k| ([k.provider_name] & providers_to_remove).size == 0}
+      recommended = all_providers_classes.select{|k| puts k.provider_name.inspect; ([k.provider_name] & providers_to_remove).size == 0}
 
       return recommended
     end

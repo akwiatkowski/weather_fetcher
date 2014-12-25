@@ -24,12 +24,18 @@ describe WeatherFetcher do
     _p = WeatherFetcher::Provider::WorldWeatherOnline.new(_d)
     _p.fetch
     _res = _p.weathers
-    _res.should be_kind_of(Array)
+    expect(_res).to be_kind_of(Array)
 
     _res.each do |wd|
-      wd.is_metar?.should if wd.provider == WeatherFetcher::MetarProvider.provider_name
-      wd.is_metar?.should if wd.provider == "MetarProvider"
-      wd.city.should == "Amundsen-Scott"
+      if wd.provider == WeatherFetcher::MetarProvider.provider_name
+        expect(wd.is_metar?).to be_truthy
+      end
+
+      if wd.provider == "MetarProvider"
+        expect(wd.is_metar?).to be_truthy
+      end
+
+      expect(wd.city).to eq("Amundsen-Scott")
     end
   end
 end

@@ -6,7 +6,7 @@ describe WeatherFetcher do
   context 'fetch from websites' do
     before :each do
       @defs = load_fixture('main')
-      @defs.size.should > 0
+      expect(@defs.size).to be > 0
     end
 
     it "should fetch using all classes separately" do
@@ -24,7 +24,7 @@ describe WeatherFetcher do
 
     it "should fetch using main class" do
       result = WeatherFetcher::Fetcher.fetch(@defs)
-      result.size.should > 1
+      expect(result.size).to be > 1
     end
 
   end
