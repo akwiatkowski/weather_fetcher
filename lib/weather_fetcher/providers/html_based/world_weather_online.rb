@@ -25,7 +25,6 @@ module WeatherFetcher
 
     # Url for current provider
     def url(p)
-      #"http://free.worldweatheronline.com/feed/weather.ashx?key=#{@@api}&q=#{p[:coords][:lat]},#{p[:coords][:lon]}&num_of_days=2&format=json"
       "http://api.worldweatheronline.com/free/v1/weather.ashx?q=#{p[:coords][:lat]},#{p[:coords][:lon]}&format=json&num_of_days=5&key=#{@@api}"
     end
 
@@ -65,38 +64,41 @@ module WeatherFetcher
 
       # prediction
       predictions = result["data"]["weather"]
-      predictions.each do |p|
-        h = process_node(p)
+      # example, there is no prediction on Antarctica
+      if predictions and predictions.kind_of?(Array)
+        predictions.each do |p|
+          h = process_node(p)
 
-        # is always 0
-        [:pressure, :cloud_cover, :humidity, :visibility].each do |k|
-          h.delete(k)
+          # is always 0
+          [:pressure, :cloud_cover, :humidity, :visibility].each do |k|
+            h.delete(k)
+          end
+
+          # create 2 records using tempMinC and tempMaxC
+          hl = h.clone.merge(
+            {
+              :wwo_type => :prediction_temp_low,
+              :time_created => Time.now,
+              :time_from => Time.create_time_from_string(p["date"], "0:00") - 4 * 3600,
+              :time_to => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
+              :temperature => p["tempMinC"].to_i
+            }
+          )
+          weather_archives << hl
+
+          # and high
+          hh = h.clone.merge(
+            {
+              :wwo_type => :prediction_temp_high,
+              :time_created => Time.now,
+              :time_from => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
+              :time_to => Time.create_time_from_string(p["date"], "0:00") + 20 * 3600,
+              :temperature => p["tempMaxC"].to_i
+            }
+          )
+          weather_archives << hh
+
         end
-
-        # create 2 records using tempMinC and tempMaxC
-        hl = h.clone.merge(
-          {
-            :wwo_type => :prediction_temp_low,
-            :time_created => Time.now,
-            :time_from => Time.create_time_from_string(p["date"], "0:00") - 4 * 3600,
-            :time_to => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
-            :temperature => p["tempMinC"].to_i
-          }
-        )
-        weather_archives << hl
-
-        # and high
-        hh = h.clone.merge(
-          {
-            :wwo_type => :prediction_temp_high,
-            :time_created => Time.now,
-            :time_from => Time.create_time_from_string(p["date"], "0:00") + 8 * 3600,
-            :time_to => Time.create_time_from_string(p["date"], "0:00") + 20 * 3600,
-            :temperature => p["tempMaxC"].to_i
-          }
-        )
-        weather_archives << hh
-
       end
 
       return WeatherData.factory(weather_archives)

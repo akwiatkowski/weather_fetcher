@@ -15,30 +15,30 @@ describe WeatherFetcher::WeatherData do
   it "should create using initialize" do
     @w = WeatherFetcher::WeatherData.new(@h)
 
-    @w.time_from.should == @h[:time_from]
-    @w.time_to.should == @h[:time_to]
-    @w.temperature.should == @h[:temperature]
-    @w.wind.should == @h[:wind]
+    expect(@w.time_from).to eq(@h[:time_from])
+    expect(@w.time_to).to eq(@h[:time_to])
+    expect(@w.temperature).to eq(@h[:temperature])
+    expect(@w.wind).to eq(@h[:wind])
   end
 
   it "should create using factory of Hash object" do
     @ws = WeatherFetcher::WeatherData.factory(@h)
     @w = @ws.first
 
-    @w.time_from.should == @h[:time_from]
-    @w.time_to.should == @h[:time_to]
-    @w.temperature.should == @h[:temperature]
-    @w.wind.should == @h[:wind]
+    expect(@w.time_from).to eq(@h[:time_from])
+    expect(@w.time_to).to eq(@h[:time_to])
+    expect(@w.temperature).to eq(@h[:temperature])
+    expect(@w.wind).to eq(@h[:wind])
   end
 
   it "should create using factory of Array object" do
-    @a = [ @h ]
+    @a = [@h]
     @ws = WeatherFetcher::WeatherData.factory(@a)
     @w = @ws.first
 
-    @w.time_from.should == @h[:time_from]
-    @w.time_to.should == @h[:time_to]
-    @w.temperature.should == @h[:temperature]
-    @w.wind.should == @h[:wind]
+    expect(@w.time_from).to eq(@h[:time_from])
+    expect(@w.time_to).to eq(@h[:time_to])
+    expect(@w.temperature).to eq(@h[:temperature])
+    expect(@w.wind).to eq(@h[:wind])
   end
 end
