@@ -46,16 +46,25 @@ module WeatherFetcher
     end
 
     # Fetch everything from definitions (defs)
-    def fetch
+    def fetch(ignore_errors: true)
       a = Array.new
       defs.each do |d|
-        p = fetch_and_process_single(d)
-        p = [] if p.nil?
-        p.each do |pw|
-          pw.just_fetched!
-          pw.next_within!(self.class.weather_updated_every)
-        end
+        begin
+          p = fetch_and_process_single(d)
+          p = [] if p.nil?
+          p.each do |pw|
+            pw.just_fetched!
+            pw.next_within!(self.class.weather_updated_every)
+          end
 
+        rescue => e
+          if ignore_errors
+            puts e.inspect
+            puts e.backtrace
+          else
+            raise e
+          end
+        end
         a += p unless p.nil?
       end
       # add to result array
