@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.3.6)
     builder (3.2.2)
+    colorize (0.7.5)
     curb (0.8.6)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -32,7 +33,7 @@ GEM
       rdoc
     json (1.8.1)
     jwt (1.2.0)
-    mini_portile (0.6.1)
+    mini_portile (0.6.2)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -73,6 +74,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  colorize
   curb
   jeweler
   rdoc

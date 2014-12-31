@@ -1,3 +1,6 @@
+require 'logger'
+require 'colorize'
+
 # Base class for ordinary weather provider
 module WeatherFetcher
   class Provider
@@ -10,20 +13,13 @@ module WeatherFetcher
     # Create an instance, definitions can be set here
     def initialize(_defs = Array.new)
       @weathers = Array.new
+      @logger = Logger.new(STDOUT)
       self.defs = _defs
     end
 
     attr_reader :weathers
-
-    # Definitions, format like below
-    #- :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
-    #  :city: 'Inowrocław'
-    #  :country: 'Poland'
-    #  :coord:
-    #    :lat: 52.799264
-    #    :lon: 18.259935
-
     attr_reader :defs
+    attr_accessor :logger
 
     def defs=(_defs)
       if _defs.kind_of? Hash
@@ -47,9 +43,12 @@ module WeatherFetcher
 
     # Fetch everything from definitions (defs)
     def fetch(ignore_errors: true)
+      self.logger.debug "#{self.class.to_s.blue} - #{defs.size.to_s.green} definitions to process"
       a = Array.new
       defs.each do |d|
         begin
+          self.logger.debug "#{self.class.to_s.blue} - #{d[:name].to_s.yellow}"
+
           p = fetch_and_process_single(d)
           p = [] if p.nil?
           p.each do |pw|
@@ -59,11 +58,13 @@ module WeatherFetcher
 
         rescue => e
           if ignore_errors
-            puts e.inspect
-            puts e.backtrace
+            self.logger.error "#{self.class.to_s.blue} - #{d.inspect} fail"
+            self.logger.error e.inspect
+            self.logger.error e.backtrace
           else
             raise e
           end
+
         end
         a += p unless p.nil?
       end

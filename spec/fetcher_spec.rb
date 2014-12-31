@@ -23,13 +23,14 @@ describe WeatherFetcher do
     end
 
     it "should fetch using main class" do
-      result = WeatherFetcher::Fetcher.fetch(@defs)
+      result = WeatherFetcher::Fetcher.new.fetch(@defs)
       expect(result.size).to be > 1
     end
 
     it "use one method to fetch from all providers" do
-      result = WeatherFetcher::Fetcher.fetch(@defs)
-      WeatherFetcher::Fetcher.represent_result(result)
+      wf = WeatherFetcher::Fetcher.new
+      result = wf.fetch(@defs)
+      # wf.represent_result(result)
     end
 
   end
