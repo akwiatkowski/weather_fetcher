@@ -14,4 +14,4 @@
     TwojaPogodaPl:
       :url: 'http://www.twojapogoda.pl/polska/wielkopolskie/poznan/16dniowa'
     WorldWeatherOnline:
-      :key: 'api key'
+      :key: ''

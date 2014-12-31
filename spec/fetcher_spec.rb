@@ -27,12 +27,11 @@ describe WeatherFetcher do
       expect(result.size).to be > 1
     end
 
-  end
+    it "use one method to fetch from all providers" do
+      result = WeatherFetcher::Fetcher.fetch(@defs)
+      WeatherFetcher::Fetcher.represent_result(result)
+    end
 
-  it "use one method to fetch from all providers" do
-    #result = WeatherFetcher::Fetcher.fetch(h)
-    #WeatherFetcher::Fetcher.represent_result(result)
   end
-
 
 end

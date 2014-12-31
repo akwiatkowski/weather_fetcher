@@ -15,12 +15,24 @@ module WeatherFetcher
 
     # This provider required API key
     def self.api=(_api)
-      @@api = _api
+      @@api = _api unless _api.to_s == ""
     end
 
     def self.api
       return nil unless defined?(@@api)
       @@api
+    end
+
+    # Create an instance, definitions can be set here
+    def initialize(*args)
+      super(*args)
+
+      # set api key if exists
+      self.defs.each do |d|
+        if d and d[:classes] and d[:classes][self.class.provider_name] and d[:classes][self.class.provider_name][:key]
+          self.class.api = d[:classes][self.class.provider_name][:key]
+        end
+      end
     end
 
     # Url for current provider

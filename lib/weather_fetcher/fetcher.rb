@@ -20,7 +20,7 @@ module WeatherFetcher
       puts result.inspect
       data = result.sort{|r,s| r.time_from <=> s.time_from}
       data.each do |d|
-        puts "#{d.time_from} #{d.temperature} #{d.wind}"
+        puts "#{d.provider} #{d.time_from} #{d.temperature} #{d.wind}"
       end
     end
 
