@@ -8,6 +8,8 @@ require 'providers/html_based/interia_pl'
 require 'providers/html_based/wp_pl'
 require 'providers/html_based/twoja_pogoda_pl'
 require 'providers/html_based/world_weather_online'
+require 'providers/html_based/open_weather_map'
+require 'providers/html_based/open_weather_map_forecast'
 
 require 'providers/metar_provider'
 require 'providers/metar/noaa'
