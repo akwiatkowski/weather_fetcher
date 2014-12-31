@@ -41,7 +41,14 @@ Please check spec/fetcher_spec.rb for code sample, and spec/fixtures/main.yml fo
 * Interia.pl
 * WorldWeatherOnline (free api key required)
 * and 4 metar providers
- 
+
+
+== TODO
+
+* http://api.yr.no/weatherapi/documentation
+* http://dataapi.wxc.com/pointrequest.html
+* http://www.wunderground.com/weather/api/
+
 == Contributing to weather_fetcher
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

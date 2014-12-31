@@ -2,6 +2,8 @@
 
 require 'json'
 
+# http://openweathermap.org/
+
 module WeatherFetcher
   class Provider::OpenWeatherMap < HtmlBasedProvider
     def self.provider_name
